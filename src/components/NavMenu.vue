@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-openeds="['1']" unique-opened="true">
+  <el-menu :default-openeds="['1']" unique-opened=true>
     <el-submenu index="1">
       <template slot="title"><i class="el-icon-message"></i>导航一</template>
       <el-menu-item-group>

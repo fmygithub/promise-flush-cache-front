@@ -22,14 +22,7 @@
         </el-header>
         <!-- 主体内容 -->
         <el-main>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="日期" width="140">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-          </el-table>
+          <CacheFlush/>
         </el-main>
       </el-container>
     </el-container>
@@ -37,34 +30,29 @@
 </template>
 
 <script>
-import NavMenu from './components/NavMenu.vue'
+  import NavMenu from './components/NavMenu.vue'
+  import CacheFlush from './components/CacheFlush.vue'
 
-export default {
-  name: 'app',
-  components: {
-    NavMenu
-  },
-  data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    };
-    return {
-      tableData: Array(20).fill(item)
+  export default {
+    name: 'app',
+    components: {
+      NavMenu,
+      CacheFlush
+    },
+    data() {
+
     }
   }
-}
 </script>
 
 <style>
-.el-header {
-  background-color: #B3C0D1;
-  color: #333;
-  line-height: 60px;
-}
+  .el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+  }
 
-.el-aside {
-  color: #333;
-}
+  .el-aside {
+    color: #333;
+  }
 </style>

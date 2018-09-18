@@ -12,6 +12,12 @@
         <el-menu-item index="1-2-1">选项2-1</el-menu-item>
       </el-submenu>
     </el-submenu>
+    <el-submenu index="2">
+      <template slot="title"><i class="el-icon-setting"></i>工具</template>
+      <el-menu-item-group>
+        <el-menu-item index="2-1" @click="switchMenu('sendpayTool')">Sendpay工具</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
   </el-menu>
 </template>
 

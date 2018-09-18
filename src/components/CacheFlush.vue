@@ -1,35 +1,39 @@
 <template>
   <div>
-    <el-select v-model="provinceId" placeholder="请选择">
+    <el-select v-model="provinceId" :key="provinceId"
+               filterable clearable placeholder="请选择" @change="getBaseAreaByParentId($event, 'province')">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in provinceOptions"
+        :key="item.area_id"
+        :label="item.area_id + '-' + item.area_name"
+        :value="item.area_id">
       </el-option>
     </el-select>
-    <el-select v-model="cityId" placeholder="请选择">
+    <el-select v-model="cityId" :key="cityId"
+               filterable clearable placeholder="请选择" @change="getBaseAreaByParentId($event, 'city')">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in cityOptions"
+        :key="item.area_id"
+        :label="item.area_id + '-' + item.area_name"
+        :value="item.area_id">
       </el-option>
     </el-select>
-    <el-select v-model="countyId" placeholder="请选择">
+    <el-select v-model="countyId" :key="countyId"
+               filterable clearable placeholder="请选择" @change="getBaseAreaByParentId($event, 'county')">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in countyOptions"
+        :key="item.area_id"
+        :label="item.area_id + '-' + item.area_name"
+        :value="item.area_id">
       </el-option>
     </el-select>
-    <el-select v-model="townId" placeholder="请选择">
+    <el-select v-model="townId" :key="townId"
+               filterable clearable placeholder="请选择" @change="getBaseAreaByParentId($event, 'town')">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in townOptions"
+        :key="item.area_id"
+        :label="item.area_id + '-' + item.area_name"
+        :value="item.area_id">
       </el-option>
     </el-select>
   </div>
@@ -41,33 +45,61 @@
     name: "CacheFlush",
     data() {
       return {
-        options: [
-          {
-            value: '选项1',
-            label: '黄金糕'
-          },
-          {
-            value: '选项2',
-            label: '双皮奶'
-          },
-          {
-            value: '选项3',
-            label: '蚵仔煎'
-          },
-          {
-            value: '选项4',
-            label: '龙须面'
-          },
-          {
-            value: '选项5',
-            label: '北京烤鸭'
-          }
-        ],
+        provinceOptions: [],
+        cityOptions: [],
+        countyOptions: [],
+        townOptions: [],
         provinceId: '',
         cityId: '',
         countyId: '',
         townId: ''
       }
+    },
+    mounted() {
+      this.getBaseAreaByParentId("0", "default");
+    },
+    methods: {
+      // 级联查询四级地址
+      getBaseAreaByParentId(parentId, type) {
+        if (parentId == '') return;
+        this.$ajax.get("/api/baseData/queryBaseArea.json", {
+            params: {
+              parentId: parentId
+            }
+          })
+          .then(res => {
+            console.log(res);
+            switch(type) {
+              case "province":
+                this.cityOptions = res.data;
+                this.countyOptions = [];
+                this.townOptions = [];
+                this.cityId = '';
+                this.countyId = '';
+                this.townId = '';
+                break;
+              case "city":
+                this.countyOptions = res.data;
+                this.townOptions = [];
+                this.countyId = '';
+                this.townId = '';
+                break;
+              case "county":
+                this.townOptions = res.data;
+                this.townId = '';
+                break;
+              default:
+                this.provinceOptions = res.data;
+                this.cityId = '';
+                this.countyId = '';
+                this.townId = '';
+                break;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
     }
   };
 </script>

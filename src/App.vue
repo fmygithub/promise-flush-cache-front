@@ -3,8 +3,8 @@
     <!-- 整体容器 -->
     <el-container style="height: 100%; border: 1px solid #eee">
       <!-- 左侧菜单栏 -->
-      <el-aside width="200px" height="700px" style="background-color: rgb(238, 241, 246)">
-        <NavMenu/>
+      <el-aside width="200px" style="height: 900px;background-color: white;">
+        <nav-menu @listenMenuChange="updateMainComponent"/>
       </el-aside>
       <!-- 右侧容器 -->
       <el-container>
@@ -22,7 +22,15 @@
         </el-header>
         <!-- 主体内容 -->
         <el-main>
-          <CacheFlush/>
+          <div v-if="menuId == 'orderverMock'">
+            <orderver-mock/>
+          </div>
+          <div v-else-if="menuId == 'queryRedisCache'">
+            <query-redis-cache/>
+          </div>
+          <div v-else-if="menuId == 'promiseCache'">
+            <cache-flush/>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -30,17 +38,31 @@
 </template>
 
 <script>
-  import NavMenu from './components/NavMenu.vue'
+  /*左侧菜单栏*/
+  import navMenu from './components/NavMenu.vue'
+  /*订单中间件mock数据*/
+  import orderverMock from './components/OrderverMock'
   import CacheFlush from './components/CacheFlush.vue'
+  import queryRedisCache from './components/QueryRedisCache'
 
   export default {
     name: 'app',
     components: {
-      NavMenu,
-      CacheFlush
+      navMenu,
+      CacheFlush,
+      orderverMock,
+      queryRedisCache
     },
     data() {
-
+      return {
+        menuId: '',
+      }
+    },
+    methods: {
+      /*根据菜单选中显示不同的component*/
+      updateMainComponent(menuId) {
+        this.menuId = menuId;
+      }
     }
   }
 </script>

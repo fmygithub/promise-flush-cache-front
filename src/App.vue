@@ -31,6 +31,9 @@
           <div v-else-if="menuId == 'promiseCache'">
             <cache-flush/>
           </div>
+          <div v-else-if="menuId == 'sendpayTool'">
+            <sendpay-tool/>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -44,6 +47,7 @@
   import orderverMock from './components/OrderverMock'
   import CacheFlush from './components/CacheFlush.vue'
   import queryRedisCache from './components/QueryRedisCache'
+  import sendpayTool from './components/SendpayTool.vue'
 
   export default {
     name: 'app',
@@ -51,7 +55,8 @@
       navMenu,
       CacheFlush,
       orderverMock,
-      queryRedisCache
+      queryRedisCache,
+      sendpayTool
     },
     data() {
       return {
